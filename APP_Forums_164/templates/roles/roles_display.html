@@ -36,22 +36,22 @@
                         {{ row.name_role }}
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-warning" href="{{ url_for('role_update', id_role=row.id_role) }}"
-                           role="button">Modifier</a>
+                        <a class="btn btn-success" href="{{ url_for('role_update', id_role=row.id_role) }}"
+                           role="button"><i class="fa-solid fa-pen"></i></a>
                     </td>
                     <td class="text-center" class="align-middle">
                         <a class="btn btn-danger" href="{{ url_for('role_delete', id_role=row.id_role) }}"
-                           role="button">Supprimer</a>
+                           role="button"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
-                    <tr>
-                        <td class="align-middle text-center">
-                            <a class="btn btn-warning" href="{{ url_for('update_perms_role_have', id_role=row.id_role) }}"
-                               role="button">Modifier les permissions</a>
-                        </td>
-                        <td class="align-middle" colspan="3">
-                            {{ row.name_perm|default("PAS DE PERMISSION", True) }}
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="align-middle text-center">
+                        <a class="btn btn-success" href="{{ url_for('update_perms_role_have', id_role=row.id_role) }}"
+                           role="button">Modifier les permissions</a>
+                    </td>
+                    <td class="align-middle" colspan="3">
+                        {{ row.name_perm|default("Pas de permissions", True) }}
+                    </td>
+                </tr>
                 </tr>
                 </tbody>
             {% else %}

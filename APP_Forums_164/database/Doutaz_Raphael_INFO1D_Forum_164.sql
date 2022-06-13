@@ -22,11 +22,7 @@ USE Doutaz_Raphael_info1d_164;
 #
 # Host: localhost (MySQL 5.7.36)
 # Database: Doutaz_Raphael_info1d_164
-<<<<<<< HEAD
-# Generation Time: 2022-05-25 05:08:12 +0000
-=======
 # Generation Time: 2022-06-12 19:47:56 +0000
->>>>>>> 5a0505c (BD changes)
 # ************************************************************
 
 
@@ -63,13 +59,8 @@ LOCK TABLES `t_categories` WRITE;
 
 INSERT INTO `t_categories` (`id_cat`, `title_cat`, `description_cat`, `icon_cat`, `fk_cat`, `fk_section`)
 VALUES
-<<<<<<< HEAD
-	(1,'Annonces','Vous retrouvez ici les annonces','/img/categories/default.png',NULL,1),
-	(2,'Super','Super2','/img/categories/default.png',NULL,1);
-=======
 	(1,'Annonces','Vous retrouverez toutes les annonces ici','https://img.freepik.com/free-vector/illustrationn-megaphone-monochrome-style-isolated-white-background_1284-38767.jpg',NULL,1),
 	(2,'Questions','Posez vos questions sur tout et n\'importe quoi ici','https://www.zwookedu.ch/miege/zwook/3h-4h-frossard---schriber/defis-du-jour-/questions-/question-mark-1019820_960_720.jpg',NULL,2);
->>>>>>> 5a0505c (BD changes)
 
 /*!40000 ALTER TABLE `t_categories` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -88,20 +79,15 @@ CREATE TABLE `t_characters` (
   `birthdate_char` date NOT NULL,
   `icon_char` text NOT NULL,
   PRIMARY KEY (`id_char`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_characters` WRITE;
 /*!40000 ALTER TABLE `t_characters` DISABLE KEYS */;
 
 INSERT INTO `t_characters` (`id_char`, `last_name_char`, `first_name_char`, `bio_char`, `birthdate_char`, `icon_char`)
 VALUES
-<<<<<<< HEAD
-	(5,'Raphy','Morte','hey','1998-07-14','/img/chars/default.png'),
-	(6,'Álvaro','Morte','eheh','1994-04-12','https://cdn.unitycms.io/images/7Gy45MHQKYq95NMHeMShzK.jpg?op=ocroped&val=1200,1200,1000,450,69,0&sum=cwofrY6nXl4');
-=======
 	(1,'Raphy','Morte','Salut c\'est Raphy, je viens d\'espagne','1996-07-12','https://staticg.sportskeeda.com/editor/2020/09/6106d-15989009861655-800.jpg'),
 	(2,'Morte','Álvaro','Je m\'appelle Álvaro et j\'ai le même nom que l\'acteur du professeur de la casa de papel','1995-04-06','https://cdn.unitycms.io/images/7Gy45MHQKYq95NMHeMShzK.jpg');
->>>>>>> 5a0505c (BD changes)
 
 /*!40000 ALTER TABLE `t_characters` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -116,27 +102,15 @@ CREATE TABLE `t_emails` (
   `id_email` int(11) NOT NULL AUTO_INCREMENT,
   `name_email` varchar(320) NOT NULL,
   PRIMARY KEY (`id_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_emails` WRITE;
 /*!40000 ALTER TABLE `t_emails` DISABLE KEYS */;
 
 INSERT INTO `t_emails` (`id_email`, `name_email`)
 VALUES
-<<<<<<< HEAD
-	(1,'raphaeldoutaz3@gmail.com'),
-	(2,'raphaeldoutaz2@gmail.com'),
-	(3,'raphaeldoutaz5@gmail.com'),
-	(4,'fasdfasdf'),
-	(8,'raphaeldoutaz4@gmail.com'),
-	(9,'raphaeldoutaz4@gmail.com'),
-	(11,'mail'),
-	(13,'sadf@sadf.casdf'),
-	(14,'ssafdaasdfsdf@asdf.com');
-=======
 	(1,'contact@yphar.dev'),
 	(2,'azecko@gmail.com');
->>>>>>> 5a0505c (BD changes)
 
 /*!40000 ALTER TABLE `t_emails` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -150,7 +124,7 @@ DROP TABLE IF EXISTS `t_permissions`;
 CREATE TABLE `t_permissions` (
   `id_perm` int(11) NOT NULL AUTO_INCREMENT,
   `name_perm` varchar(64) NOT NULL,
-  `description_perm` varchar(64) NOT NULL,
+  `description_perm` text NOT NULL,
   PRIMARY KEY (`id_perm`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
@@ -159,10 +133,9 @@ LOCK TABLES `t_permissions` WRITE;
 
 INSERT INTO `t_permissions` (`id_perm`, `name_perm`, `description_perm`)
 VALUES
-	(1,'ADD_RESPS','ajouter une réponse'),
-	(2,'CREATE_THREADS','créer un fil de discussions'),
-	(3,'VIEW_THREADS','voir les fils de discussions'),
-	(4,'VIEW_RESPS','voir les réponses');
+	(1,'DELETE_THREADS','supprimer des fils de discussions d\'autrui'),
+	(2,'DELETE_RESPS','supprimer des réponses d\'autrui'),
+	(4,'PANEL_ACCESS','accès au panel de gestion');
 
 /*!40000 ALTER TABLE `t_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -187,14 +160,9 @@ LOCK TABLES `t_responses` WRITE;
 
 INSERT INTO `t_responses` (`id_resp`, `content_resp`, `fk_thread`)
 VALUES
-<<<<<<< HEAD
-	(2,'trop bien !',1),
-	(3,'super !',1);
-=======
 	(1,'oui raphy insulte ses professeurs et ne réfléchis pas plus loin. il pensait être drôle et dans la continuité de ce qui ce dit encore mais ce n\'est pas le cas.',1),
 	(2,'tout à fait d\'accord !',2),
 	(3,'merci de la réponse sincère',1);
->>>>>>> 5a0505c (BD changes)
 
 /*!40000 ALTER TABLE `t_responses` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -209,16 +177,17 @@ CREATE TABLE `t_roles` (
   `id_role` int(11) NOT NULL AUTO_INCREMENT,
   `name_role` varchar(64) NOT NULL,
   PRIMARY KEY (`id_role`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_roles` WRITE;
 /*!40000 ALTER TABLE `t_roles` DISABLE KEYS */;
 
 INSERT INTO `t_roles` (`id_role`, `name_role`)
 VALUES
-	(1,'USER'),
-	(2,'SUPERADMIN'),
-	(3,'ADMIN');
+	(1,'SUPERADMIN'),
+	(2,'ADMIN'),
+	(3,'USER'),
+	(5,'MODERATOR');
 
 /*!40000 ALTER TABLE `t_roles` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -238,17 +207,19 @@ CREATE TABLE `t_roles_have_permissions` (
   KEY `fk_perm` (`fk_perm`),
   CONSTRAINT `t_roles_have_permissions_ibfk_1` FOREIGN KEY (`fk_role`) REFERENCES `t_roles` (`id_role`),
   CONSTRAINT `t_roles_have_permissions_ibfk_2` FOREIGN KEY (`fk_perm`) REFERENCES `t_permissions` (`id_perm`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_roles_have_permissions` WRITE;
 /*!40000 ALTER TABLE `t_roles_have_permissions` DISABLE KEYS */;
 
 INSERT INTO `t_roles_have_permissions` (`id_role_has_perm`, `fk_role`, `fk_perm`)
 VALUES
-	(1,1,1),
-	(2,1,2),
-	(4,1,3),
-	(5,1,4);
+	(2,1,1),
+	(4,1,4),
+	(5,2,1),
+	(6,2,2),
+	(7,5,2),
+	(8,1,2);
 
 /*!40000 ALTER TABLE `t_roles_have_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -271,8 +242,8 @@ LOCK TABLES `t_sections` WRITE;
 
 INSERT INTO `t_sections` (`id_section`, `title_section`, `description_section`)
 VALUES
-	(1,'Accueil','Chaleureuse accueil à vous'),
-	(3,'Deuxième','');
+	(1,'Accueil','Ceci est l\'accueil du forum'),
+	(2,'Général','Ceci est la section générale des fils de discussions');
 
 /*!40000 ALTER TABLE `t_sections` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -288,26 +259,20 @@ CREATE TABLE `t_threads` (
   `title_thread` varchar(64) NOT NULL,
   `content_thread` text NOT NULL,
   `icon_thread` text NOT NULL,
-  `pinned_thread` varchar(64) NOT NULL,
+  `pinned_thread` tinyint(1) NOT NULL,
   `fk_cat` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_thread`),
   KEY `fk_cat` (`fk_cat`),
   CONSTRAINT `t_threads_ibfk_1` FOREIGN KEY (`fk_cat`) REFERENCES `t_categories` (`id_cat`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_threads` WRITE;
 /*!40000 ALTER TABLE `t_threads` DISABLE KEYS */;
 
 INSERT INTO `t_threads` (`id_thread`, `title_thread`, `content_thread`, `icon_thread`, `pinned_thread`, `fk_cat`)
 VALUES
-<<<<<<< HEAD
-	(1,'Ouverture du forum','Le forum est ouvert !','/img/threads/default.png','true',1),
-	(2,'Super','Super','/img/threads/default.png','true',1),
-	(3,'trop bien','yes','/img/threads/default.png','true',1);
-=======
 	(1,'Raphy est-il un con ?','Dites moi dans les réponses svp','https://cdn-icons-png.flaticon.com/512/16/16268.png',0,2),
 	(2,'Raphy est un con !','Et oui, vous l\'avez bien lu. ANNONCES TRES IMPORTANTES','https://png.pngtree.com/element_our/20200702/ourlarge/pngtree-cartoon-exclamation-mark-icon-free-button-image_2291932.jpg',1,1);
->>>>>>> 5a0505c (BD changes)
 
 /*!40000 ALTER TABLE `t_threads` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -329,23 +294,15 @@ CREATE TABLE `t_users` (
   `icon_user` text NOT NULL,
   `registration_date_user` date NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_users` WRITE;
 /*!40000 ALTER TABLE `t_users` DISABLE KEYS */;
 
 INSERT INTO `t_users` (`id_user`, `nickname_user`, `password_user`, `steam_user`, `discord_user`, `bio_user`, `signature_user`, `icon_user`, `registration_date_user`)
 VALUES
-<<<<<<< HEAD
-	(2,'Yphar','24352536','yphar_gamer','Yphar#3702','je m\'appelle yphar','yphar','https://yphar.dev/img/logo.png','2022-03-22'),
-	(3,'Yphar','123456',NULL,NULL,NULL,NULL,'/img/users/default.png','2022-04-25'),
-	(4,'Yphar','1234567',NULL,NULL,NULL,NULL,'/img/users/default.png','2022-04-25'),
-	(5,'Yphar','asdpijfasdèofin',NULL,NULL,NULL,NULL,'/img/users/default3.png','2022-04-27'),
-	(6,'Yphar','123456',NULL,NULL,NULL,NULL,'/img/users/default.png','2022-04-27');
-=======
 	(1,'Yphar','123456','https://steamcommunity.com/id/yphar_','Yphar#3702','Salut moi c\'est Yphar','Meilleures salutations,\r\nYphar','https://yphar.dev/img/logo.png','2022-06-11'),
 	(2,'Azecko','grattelamoi','','','Bonjour, je m\'appelle Azecko','Bonne journée,\r\nAzecko','https://cdn.futura-sciences.com/buildsv6/images/wide1920/4/7/3/47343047c5_105832_ciel-bleu-01.jpg','2022-06-11');
->>>>>>> 5a0505c (BD changes)
 
 /*!40000 ALTER TABLE `t_users` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -366,15 +323,16 @@ CREATE TABLE `t_users_create_responses` (
   KEY `fk_user` (`fk_user`),
   CONSTRAINT `t_users_create_responses_ibfk_1` FOREIGN KEY (`fk_resp`) REFERENCES `t_responses` (`id_resp`),
   CONSTRAINT `t_users_create_responses_ibfk_2` FOREIGN KEY (`fk_user`) REFERENCES `t_users` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_users_create_responses` WRITE;
 /*!40000 ALTER TABLE `t_users_create_responses` DISABLE KEYS */;
 
 INSERT INTO `t_users_create_responses` (`id_user_creates_resp`, `fk_user`, `fk_resp`, `add_date_user_creates_resp`)
 VALUES
-	(1,2,2,'2022-03-22 00:00:00'),
-	(2,2,3,'2022-03-22 00:00:00');
+	(1,1,1,'2022-06-11 00:00:00'),
+	(2,2,2,'2022-06-11 00:00:00'),
+	(3,2,3,'2022-06-11 00:00:00');
 
 /*!40000 ALTER TABLE `t_users_create_responses` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -402,7 +360,8 @@ LOCK TABLES `t_users_create_threads` WRITE;
 
 INSERT INTO `t_users_create_threads` (`id_user_creates_thread`, `fk_user`, `fk_thread`, `add_date_user_creates_thread`)
 VALUES
-	(2,2,2,'2022-03-22 00:00:00');
+	(1,2,1,'2022-06-11 00:00:00'),
+	(2,1,2,'2022-06-11 00:00:00');
 
 /*!40000 ALTER TABLE `t_users_create_threads` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -423,17 +382,8 @@ CREATE TABLE `t_users_delete_responses` (
   KEY `fk_user` (`fk_user`),
   CONSTRAINT `t_users_delete_responses_ibfk_1` FOREIGN KEY (`fk_resp`) REFERENCES `t_responses` (`id_resp`),
   CONSTRAINT `t_users_delete_responses_ibfk_2` FOREIGN KEY (`fk_user`) REFERENCES `t_users` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `t_users_delete_responses` WRITE;
-/*!40000 ALTER TABLE `t_users_delete_responses` DISABLE KEYS */;
-
-INSERT INTO `t_users_delete_responses` (`id_user_deletes_resp`, `fk_user`, `fk_resp`, `delete_date_user_deletes_resp`)
-VALUES
-	(1,2,2,'2022-03-22 00:00:00');
-
-/*!40000 ALTER TABLE `t_users_delete_responses` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table t_users_delete_threads
@@ -451,17 +401,8 @@ CREATE TABLE `t_users_delete_threads` (
   KEY `fk_user` (`fk_user`),
   CONSTRAINT `t_users_delete_threads_ibfk_1` FOREIGN KEY (`fk_thread`) REFERENCES `t_threads` (`id_thread`),
   CONSTRAINT `t_users_delete_threads_ibfk_2` FOREIGN KEY (`fk_user`) REFERENCES `t_users` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `t_users_delete_threads` WRITE;
-/*!40000 ALTER TABLE `t_users_delete_threads` DISABLE KEYS */;
-
-INSERT INTO `t_users_delete_threads` (`id_user_deletes_thread`, `fk_user`, `fk_thread`, `delete_date_user_deletes_thread`)
-VALUES
-	(1,2,1,'2022-03-22 00:00:00');
-
-/*!40000 ALTER TABLE `t_users_delete_threads` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table t_users_have_characters
@@ -479,14 +420,15 @@ CREATE TABLE `t_users_have_characters` (
   KEY `fk_user` (`fk_user`),
   CONSTRAINT `t_users_have_characters_ibfk_1` FOREIGN KEY (`fk_char`) REFERENCES `t_characters` (`id_char`),
   CONSTRAINT `t_users_have_characters_ibfk_2` FOREIGN KEY (`fk_user`) REFERENCES `t_users` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_users_have_characters` WRITE;
 /*!40000 ALTER TABLE `t_users_have_characters` DISABLE KEYS */;
 
 INSERT INTO `t_users_have_characters` (`id_user_has_char`, `fk_user`, `fk_char`, `add_date_user_has_char`)
 VALUES
-	(10,2,6,'2022-05-23 00:00:00');
+	(1,1,1,'2022-06-11 00:00:00'),
+	(2,2,2,'2022-06-11 00:00:00');
 
 /*!40000 ALTER TABLE `t_users_have_characters` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -507,15 +449,15 @@ CREATE TABLE `t_users_have_emails` (
   KEY `fk_email` (`fk_email`),
   CONSTRAINT `t_users_have_emails_ibfk_1` FOREIGN KEY (`fk_user`) REFERENCES `t_users` (`id_user`),
   CONSTRAINT `t_users_have_emails_ibfk_2` FOREIGN KEY (`fk_email`) REFERENCES `t_emails` (`id_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_users_have_emails` WRITE;
 /*!40000 ALTER TABLE `t_users_have_emails` DISABLE KEYS */;
 
 INSERT INTO `t_users_have_emails` (`id_user_has_email`, `fk_user`, `fk_email`, `add_date_user_has_email`)
 VALUES
-	(2,6,2,'2022-04-27 00:00:00'),
-	(4,2,9,'2022-05-05 00:00:00');
+	(1,1,1,'2022-06-11 00:00:00'),
+	(2,2,2,'2022-06-11 00:00:00');
 
 /*!40000 ALTER TABLE `t_users_have_emails` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -536,18 +478,18 @@ CREATE TABLE `t_users_have_roles` (
   KEY `fk_user` (`fk_user`),
   CONSTRAINT `t_users_have_roles_ibfk_1` FOREIGN KEY (`fk_role`) REFERENCES `t_roles` (`id_role`),
   CONSTRAINT `t_users_have_roles_ibfk_2` FOREIGN KEY (`fk_user`) REFERENCES `t_users` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_users_have_roles` WRITE;
 /*!40000 ALTER TABLE `t_users_have_roles` DISABLE KEYS */;
 
 INSERT INTO `t_users_have_roles` (`id_user_has_role`, `fk_user`, `fk_role`, `add_date_user_has_role`)
 VALUES
-	(3,2,1,'2022-04-29 00:00:00'),
-	(19,6,1,'2022-05-13 00:00:00'),
-	(23,6,3,'2022-05-13 00:00:00'),
-	(30,2,3,'2022-05-19 00:00:00'),
-	(31,2,2,'2022-05-19 00:00:00');
+	(1,1,1,'2022-06-11 00:00:00'),
+	(2,1,2,'2022-06-11 00:00:00'),
+	(3,1,3,'2022-06-11 00:00:00'),
+	(4,1,5,'2022-06-11 00:00:00'),
+	(5,2,3,'2022-06-11 00:00:00');
 
 /*!40000 ALTER TABLE `t_users_have_roles` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -568,17 +510,6 @@ CREATE TABLE `t_users_update_responses` (
   KEY `fk_resp` (`fk_resp`),
   CONSTRAINT `t_users_update_responses_ibfk_1` FOREIGN KEY (`fk_user`) REFERENCES `t_users` (`id_user`),
   CONSTRAINT `t_users_update_responses_ibfk_2` FOREIGN KEY (`fk_resp`) REFERENCES `t_responses` (`id_resp`)
-<<<<<<< HEAD
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-LOCK TABLES `t_users_update_responses` WRITE;
-/*!40000 ALTER TABLE `t_users_update_responses` DISABLE KEYS */;
-
-INSERT INTO `t_users_update_responses` (`id_user_updates_resp`, `fk_user`, `fk_resp`, `update_date_user_updates_resp`)
-VALUES
-	(1,2,2,'2022-03-22 00:00:00');
-
-=======
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `t_users_update_responses` WRITE;
@@ -589,7 +520,6 @@ VALUES
 	(1,1,1,'2022-06-12 00:00:00'),
 	(2,1,1,'2022-06-12 00:00:00');
 
->>>>>>> 5a0505c (BD changes)
 /*!40000 ALTER TABLE `t_users_update_responses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -616,14 +546,10 @@ LOCK TABLES `t_users_update_threads` WRITE;
 
 INSERT INTO `t_users_update_threads` (`id_user_updates_thread`, `fk_user`, `fk_thread`, `update_date_user_updates_thread`)
 VALUES
-<<<<<<< HEAD
-	(4,2,3,'2022-03-22 00:00:00');
-=======
 	(1,2,1,'2022-06-11 00:00:00'),
 	(2,1,2,'2022-06-11 00:00:00'),
 	(3,2,1,'2022-06-12 00:00:00'),
 	(4,1,2,'2022-06-12 00:00:00');
->>>>>>> 5a0505c (BD changes)
 
 /*!40000 ALTER TABLE `t_users_update_threads` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -636,3 +562,4 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

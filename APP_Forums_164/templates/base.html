@@ -8,8 +8,9 @@
     <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap-5.0.0-beta2-dist/js/bootstrap.min.js') }}"></script>
     <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='bootswatch-4/superhero/bootstrap.min.css') }}">
+          href="{{ url_for('static', filename='bootswatch-4/darkly/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://kit.fontawesome.com/d18519009e.js" crossorigin="anonymous"></script>
 
     {% block head %}
     {% endblock %}
@@ -20,7 +21,7 @@
 {% block header %} {% endblock %}
 
 {% include 'flash_messages.html' %}
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-secondary">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="{{ url_for('homepage') }}">Forum</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -32,26 +33,33 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="{{ url_for('roles_have_perms_display', id_role=0) }}">Roles</a>
+                       href="{{ url_for('roles_display', order_by='ASC', id_role=0) }}">Roles</a>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ url_for('perms_display', order_by='ASC', id_perm_sel=0) }}">Permissions</a>
-                </li>
-                <li>
-                    <a class="nav-link" href="{{ url_for('users_have_roles_display', id_user=0) }}">Users</a>
+                    <a class="nav-link" href="{{ url_for('perms_display', order_by='ASC', id_perm=0) }}">Permissions</a>
                 </li>
                 <li>
                     <a class="nav-link"
-                       href="{{ url_for('chars_display', order_by='ASC', id_char_sel=0) }}">Personnages</a>
+                       href="{{ url_for('users_display', order_by='ASC', id_user=0) }}">Utilisateurs</a>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ url_for('sections_display', order_by='ASC', id_section_sel=0) }}">Sections</a>
+                    <a class="nav-link"
+                       href="{{ url_for('chars_display', order_by='ASC', id_char=0) }}">Personnages</a>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ url_for('categories_display', order_by='ASC', id_cat_sel=0) }}">Catégories</a>
+                    <a class="nav-link"
+                       href="{{ url_for('sections_display', order_by='ASC', id_section=0) }}">Sections</a>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ url_for('threads_display', order_by='ASC', id_thread_sel=0) }}">Fils de discussions</a>
+                    <a class="nav-link"
+                       href="{{ url_for('categories_display', order_by='ASC', id_cat=0) }}">Catégories</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{{ url_for('threads_display', order_by='ASC', id_thread=0) }}">Fils de
+                        discussions</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{{ url_for('resps_display', order_by='ASC', id_resp=0) }}">Réponses</a>
                 </li>
             </ul>
         </div>

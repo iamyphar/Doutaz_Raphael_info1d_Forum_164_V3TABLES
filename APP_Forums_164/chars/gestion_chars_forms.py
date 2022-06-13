@@ -6,87 +6,56 @@
 from datetime import date
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, TextAreaField
-from wtforms import SubmitField
-from wtforms.validators import Length, DataRequired
-from wtforms.validators import Regexp
+from wtforms import StringField, DateField, TextAreaField, SubmitField, URLField, SelectField
+from wtforms.validators import Length, DataRequired, Optional, Regexp, InputRequired, URL, NoneOf
 from wtforms_components import DateRange
 
 
-class FormAddChar(FlaskForm):
-    last_name_char_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    last_name_char = StringField("Nom", validators=[Length(min=2, max=32, message="Minimum 2 caractères, maximum 32."),
-                                                    Regexp(last_name_char_regexp,
-                                                           message="Pas de chiffres, de caractères "
-                                                                   "spéciaux, "
-                                                                   "d'espace à double, de double "
-                                                                   "apostrophe, de double trait union"),
-                                                    DataRequired(message="Champs obligatoire !")])
-    first_name_char_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    first_name_char = StringField("Prénom",
-                                  validators=[Length(min=2, max=32, message="Minimum 2 caractères, maximum 32."),
-                                              Regexp(first_name_char_regexp,
-                                                     message="Pas de chiffres, de "
-                                                             "caractères "
-                                                             "spéciaux, "
-                                                             "d'espace à double, de double "
-                                                             "apostrophe, de double trait "
-                                                             "union"),
-                                              DataRequired(message="Champs obligatoire !")])
+class FormChar(FlaskForm):
+    last_name_char = StringField("Nom*", validators=[
+        Length(min=2, max=32, message="Le champs doit contenir entre %(min)d et %(max)d caractères"),
+        Regexp("^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$",
+               message="Pas de chiffres, de caractères spéciaux, d'espace à double, de double apostrophe, de double trait union"),
+        DataRequired(message="Champs obligatoire"),
+        InputRequired()
 
-    bio_char = TextAreaField("Biographie")
+    ])
 
-    birthdate_char = DateField("Date de naissance", validators=[
+    first_name_char = StringField("Prénom*", validators=[
+        Length(min=2, max=32, message="Le champs doit contenir entre %(min)d et %(max)d caractères"),
+        Regexp("^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$",
+               message="Pas de chiffres, de caractères spéciaux, d'espace à double, de double apostrophe, de double trait union"),
+        DataRequired(message="Champs obligatoire"),
+        InputRequired()
+    ])
+
+    bio_char = TextAreaField("Biographie", validators=[
+        Optional(True),
+        Length(min=2, max=256, message="Le champs doit contenir entre %(min)d et %(max)d caractères")
+    ])
+
+    birthdate_char = DateField("Date de naissance*", validators=[
         DateRange(min=(date.fromisoformat("0001-01-01")), max=(date.today()), message="Format de date incorrect"),
-        DataRequired(message="Champs obligatoire !")])
+        DataRequired(message="Champs obligatoire"),
+        InputRequired()
+    ])
 
-    icon_char_regexp = "([http:|https:|\/|.|\w|\s|-])*\.(?:jpg|gif|png|svg|jpeg)"
-    icon_char = StringField("Photo de profil (URL)", validators=[DataRequired(message="Champs obligatoire !"),
-                                                                 Regexp(icon_char_regexp,
-                                                                        message="Chemin invalide")])
-    submit = SubmitField("Ajouter le personnage")
+    icon_char = URLField("Photo de profil (URL)*", validators=[
+        DataRequired(message="Champs obligatoire"),
+        InputRequired(),
+        Regexp("([http:|https:|\/|.|\w|\s|-])*\.(?:jpg|gif|png|svg|jpeg|webp)",
+               message="Image invalide"),
+        URL(require_tld=False, message="Lien invalide"),
+        Length(min=2, max=1024, message="Le champs doit contenir entre %(min)d et %(max)d caractères")
+    ])
 
+    fk_user = SelectField("Utilisateur*", validate_choice=False,
+                             validators=[NoneOf(['None'], message="Champs obligatoire")])
 
-class FormUpdateChar(FlaskForm):
-    last_name_char_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    last_name_char = StringField("Nom", validators=[Length(min=2, max=32, message="Minimum 2 caractères, maximum 32."),
-                                                    Regexp(last_name_char_regexp,
-                                                           message="Pas de chiffres, de caractères "
-                                                                   "spéciaux, "
-                                                                   "d'espace à double, de double "
-                                                                   "apostrophe, de double trait union"),
-                                                    DataRequired(message="Champs obligatoire !")])
-    first_name_char_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    first_name_char = StringField("Prénom",
-                                  validators=[Length(min=2, max=32, message="Minimum 2 caractères, maximum 32."),
-                                              Regexp(first_name_char_regexp,
-                                                     message="Pas de chiffres, de "
-                                                             "caractères "
-                                                             "spéciaux, "
-                                                             "d'espace à double, de double "
-                                                             "apostrophe, de double trait "
-                                                             "union"),
-                                              DataRequired(message="Champs obligatoire !")])
+    fk_user_text = StringField("Utilisateur*")
 
-    bio_char = TextAreaField("Biographie")
+    submit = SubmitField("Enregistrer")
 
-    birthdate_char = DateField("Date de naissance", validators=[
-        DateRange(min=(date.fromisoformat("0001-01-01")), max=(date.today()), message="Format de date incorrect"),
-        DataRequired(message="Champs obligatoire !")])
+    submit_delete = SubmitField("Supprimer")
 
-    icon_char_regexp = "([http:|https:|\/|.|\w|\s|-])*\.(?:jpg|gif|png|svg|jpeg)"
-    icon_char = StringField("Photo de profil (URL)", validators=[DataRequired(message="Champs obligatoire !"),
-                                                                 Regexp(icon_char_regexp,
-                                                                        message="Chemin invalide")])
-    submit = SubmitField("Mettre à jour le personnage")
-
-
-class FormDeleteChar(FlaskForm):
-    last_name_char = StringField("Nom")
-    first_name_char = StringField("Prénom")
-    bio_char = TextAreaField("Biographie")
-    birthdate_char = DateField("Date de naissance")
-    icon_char = StringField("Photo de profil (URL)")
-    del_final_btn = SubmitField("Effacer ce personnage")
-    del_conf_btn = SubmitField("Êtes-vous sûr d'effacer ?")
-    cancel_btn = SubmitField("Annuler")
+    submit_cancel = SubmitField("Annuler")

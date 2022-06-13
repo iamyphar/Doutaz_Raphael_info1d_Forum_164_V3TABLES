@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %} Ajouter un fils un discussions {% endblock %}
+{% block title %} Ajouter un fils de discussions {% endblock %}
 {% block body %}
     <div class="container py-5">
-        <h1>Ajouter un fils un discussions</h1>
+        <h1>Ajouter un fils de discussions</h1>
         <form action="" method="POST" novalidate>
             {{ form.hidden_tag() }}
             <div class="row">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                     {{ form.fk_cat.label }}
-                    {{ form.fk_cat(class_="form-control") }}
+                    {{ form.fk_cat(class_="custom-select") }}
                     {% for error in form.fk_cat.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
@@ -29,12 +29,21 @@
                     <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </div>
-            <div class="form-group">
-                {{ form.icon_thread.label }}
-                {{ form.icon_thread(class_="form-control") }}
-                {% for error in form.icon_thread.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    {{ form.icon_thread.label }}
+                    {{ form.icon_thread(class_="form-control") }}
+                    {% for error in form.icon_thread.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.fk_user.label }}
+                    {{ form.fk_user(class_="custom-select") }}
+                    {% for error in form.fk_user.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
             </div>
             <div class="form-group custom-control custom-switch">
                 {{ form.pinned_thread(class_="custom-control-input") }}

@@ -2,14 +2,10 @@
 File : gestion_roles_have_perms_crud.py
 Author : Raphaël Doutaz 09.05.22
 """
-from datetime import date
 from pathlib import Path
 
 from APP_Forums_164.database.database_tools import DBconnection
-from flask import redirect
-from flask import request
-from flask import session
-from flask import url_for
+from flask import redirect, request, session, url_for
 
 from APP_Forums_164.erreurs.exceptions import *
 
@@ -22,6 +18,7 @@ from APP_Forums_164.erreurs.exceptions import *
     Settings :  id_role = 0 >> all roles_have_perms.
                 id_role = "n" display roles_have_perms who id is "n"
 """
+
 
 @app.route("/update_perms_role_have", methods=['GET', 'POST'])
 def update_perms_role_have():
@@ -37,10 +34,10 @@ def update_perms_role_have():
             perms_role_has_int = [item['id_perm'] for item in perms_role_has]
             session['perms_role_has_int'] = perms_role_has_int
 
-        except Exception as Exception_update_perms_role_have:
-            raise ExceptionUpdatePermRoleSelected(f"file : {Path(__file__).name}  ;  "
+        except Exception as exception_pass:
+            raise ExceptionPass(f"file : {Path(__file__).name}  ;  "
                                                   f"{update_perms_role_have.__name__} ; "
-                                                  f"{Exception_update_perms_role_have}")
+                                                  f"{exception_pass}")
 
     return render_template("perms/update_perms_role_has.html",
                            role=role,
@@ -79,12 +76,12 @@ def update_perms_role_had():
 
                     mconn_bd.execute(strsql_delete_roles_have_perms, roles_have_perms_dictionary)
 
-        except Exception as Exception_update_perm_role_selected:
-            raise ExceptionUpdatePermRoleSelected(f"file : {Path(__file__).name}  ;  "
+        except Exception as exception_pass:
+            raise ExceptionPass(f"file : {Path(__file__).name}  ;  "
                                                   f"{update_perms_role_had.__name__} ; "
-                                                  f"{Exception_update_perm_role_selected}")
+                                                  f"{exception_pass}")
 
-    return redirect(url_for('roles_have_perms_display', id_role=id_role))
+    return redirect(url_for('roles_display', order_by='ASC', id_role=id_role))
 
 
 def perms_role_has_data(id_role):
@@ -112,8 +109,8 @@ def perms_role_has_data(id_role):
             mc_display.execute(strsql_perms_role_had, id_role)
             perms_role_has_int = mc_display.fetchall()
 
-    except Exception as Exception_perms_role_has_int_data:
-        raise ExceptionPermsRolesDisplayData(f"file : {Path(__file__).name}  ;  "
+    except Exception as exception_pass:
+        raise ExceptionPass(f"file : {Path(__file__).name}  ;  "
                                              f"{perms_role_has_data.__name__} ; "
-                                             f"{Exception_perms_role_has_int_data}")
+                                             f"{exception_pass}")
     return data_role, perms_role_has_not_int, perms_role_has_int

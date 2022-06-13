@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} Update roles user has {% endblock %}
+{% block title %} Modifier les rôles d'un utilisateur {% endblock %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='tags-selector-tagselect/jquery.tagselect.css') }}">
     <script src="{{ url_for('static', filename='tags-selector-tagselect/jquery.tagselect.js') }}"></script>
@@ -74,8 +74,7 @@
                         {{ row.steam_user|default("", True) }}
                     </td>
                     <td class="align-middle">
-                        <img class="img" src={{ row.icon_user }} style="border: 0;display:block;width:75px;
-                             max-height:auto" alt="erreur à l'affichage de l'image">
+                        <img class="img" src={{ row.icon_user }} style="border: 0;display:block;width:75px;" alt="erreur à l'affichage de l'image">
                     </td>
                     <td class="align-middle">
                         {{ row.registration_date_user }}
@@ -83,7 +82,7 @@
                 </tr>
                 </tbody>
             {% else %}
-                <h4>Aucun personnage.</h4>
+                <h4>Aucun utilisateur.</h4>
             {% endfor %}
         </table>
     </div>
@@ -108,7 +107,7 @@
                 </div>
             </form>
             <div class="p-3">
-                <input type="submit" form="form_tags_select_confirm" class="btn btn-warning" value="Modifier">
+                <input type="submit" form="form_tags_select_confirm" class="btn btn-success" value="Modifier">
             </div>
         </div>
     </div>

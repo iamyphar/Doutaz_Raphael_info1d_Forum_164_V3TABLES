@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %} Fils un discussions {% endblock %}
+{% block title %} Catégories {% endblock %}
 {% block body %}
     <div class="container py-5">
         <div class="d-sm-flex justify-content-between align-items-center">
-            <h1>Fils un discussions</h1>
-            <div><a class="btn btn-primary" href="{{ url_for('thread_add') }}" thread="button">Ajouter</a></div>
+            <h1>Catégories</h1>
+            <div><a class="btn btn-primary" href="{{ url_for('category_add') }}" cat="button">Ajouter</a></div>
         </div>
         <table class="table table-bordered table-sm">
             {% if data %}
@@ -17,19 +17,16 @@
                         Titre
                     </th>
                     <th class="align-middle">
-                        Contenu
-                    </th>
-                    <th class="align-middle">
-                        Catégorie
-                    </th>
-                    <th class="align-middle">
-                        Utilisateur (créateur)
-                    </th>
-                    <th class="align-middle">
-                        Épinglé
+                        Description
                     </th>
                     <th class="align-middle">
                         Icône
+                    </th>
+                    <th class="align-middle">
+                        Section
+                    </th>
+                    <th class="align-middle">
+                        Catégorie
                     </th>
                     <th class="align-middle">
 
@@ -45,43 +42,37 @@
                 <tbody>
                 <tr>
                     <td class="align-middle">
-                        {{ row.id_thread }}
-                    </td>
-                    <td class="align-middle">
-                        {{ row.title_thread }}
-                    </td>
-                    <td class="align-middle">
-                        {{ row.content_thread|default("", True) }}
+                        {{ row.id_cat }}
                     </td>
                     <td class="align-middle">
                         {{ row.title_cat }}
                     </td>
                     <td class="align-middle">
-                        {{ row.nickname_user }}
+                        {{ row.description_cat|default("", True) }}
                     </td>
                     <td class="align-middle">
-                        {% if row.pinned_thread == 1 %}
-                            Oui
-                        {% else %}
-                            Non
-                        {% endif %}
+                        <img class="img" src={{ row.icon_cat }} style="border: 0;display:block;width:150px;" alt="erreur à l'affichage de l'image">
                     </td>
                     <td class="align-middle">
-                        <img class="img" src={{ row.icon_thread }} style="border: 0;display:block;width:150px;" alt="erreur à l'affichage de l'image">
+                        {{ row.title_section|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.fk_title_cat|default("", True) }}
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-success" href="{{ url_for('thread_update', id_thread=row.id_thread) }}"
-                           thread="button"><i class="fa-solid fa-pen"></i></a>
+                        <a class="btn btn-success" href="{{ url_for('category_update', id_cat=row.id_cat) }}"
+                           cat="button"><i class="fa-solid fa-pen"></i></a>
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-danger" href="{{ url_for('thread_delete', id_thread=row.id_thread) }}"
-                           thread="button"><i class="fa-solid fa-trash-can"></i></a>
+                        <a class="btn btn-danger" href="{{ url_for('category_delete', id_cat=row.id_cat) }}"
+                           cat="button"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>
                 </tbody>
             {% else %}
-                <h4>Aucun fils de discussions.</h4>
+                <h4>Aucune catégorie.</h4>
             {% endfor %}
         </table>
     </div>
 {% endblock %}
+

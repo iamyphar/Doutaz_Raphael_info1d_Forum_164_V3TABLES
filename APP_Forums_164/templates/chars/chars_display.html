@@ -29,6 +29,9 @@
                         Photo de profil
                     </th>
                     <th class="align-middle">
+                        Utilisateur
+                    </th>
+                    <th class="align-middle">
 
                     </th>
                     <th class="align-middle">
@@ -57,16 +60,18 @@
                         {{ row.birthdate_char|default("", True) }}
                     </td>
                     <td class="align-middle">
-                        <img class="img" src={{ row.icon_char }} style="border: 0;display:block;width:150px;
-                             max-height:auto" alt="erreur à l'affichage de l'image">
+                        <img class="img" src={{ row.icon_char }} style="border: 0;display:block;width:150px;" alt="erreur à l'affichage de l'image">
+                    </td>
+                    <td class="align-middle">
+                        {{ row.nickname_user|default("", True) }}
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-warning" href="{{ url_for('char_update', id_char=row.id_char) }}"
-                           char="button">Modifier</a>
+                        <a class="btn btn-success" href="{{ url_for('char_update', id_char=row.id_char) }}"
+                           char="button"><i class="fa-solid fa-pen"></i></a>
                     </td>
                     <td class="text-center" class="align-middle">
                         <a class="btn btn-danger" href="{{ url_for('char_delete', id_char=row.id_char) }}"
-                           char="button">Supprimer</a>
+                           char="button"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>
                 </tbody>

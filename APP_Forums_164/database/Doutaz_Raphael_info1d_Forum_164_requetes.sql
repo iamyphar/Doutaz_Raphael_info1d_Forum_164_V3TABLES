@@ -1,12 +1,18 @@
 -- Trouver toutes les infos dont on a besoin à partir d'une réponse (son ID)
-SELECT title_section 'Section', title_cat 'Category', title_thread 'Thread', tu.nickname_user 'Thread\'s author',
+SELECT title_section 'Section', 
+	title_cat 'Category', 
+	title_thread 'Thread', 
+	tu.nickname_user 'Thread\'s author', 
 	content_resp 'Response', 
-	ru.nickname_user 'Response\'s author', CONCAT(last_name_char, ' ', first_name_char) as 'Response\'s author\'s characters', name_email 'Response\'s author\'s email', name_role 'Response\'s author\'s role', GROUP_CONCAT(name_perm) 'Role\'s permissions',
-	title_thread 'Thread\'s update', content_resp 'Response\'s update',
+	ru.nickname_user 'Response\'s author',
+	CONCAT(last_name_char, ' ', first_name_char) as 'Response\'s author\'s characters', 
+	name_email 'Response\'s author\'s email', 
+	name_role 'Response\'s author\'s role', 
+	GROUP_CONCAT(name_perm) 'Role\'s permissions',
+	title_thread 'Thread\'s update', 
+	content_resp 'Response\'s update',
 	title_thread 'Thread\'s delete', 
-	content_resp 'Response\'s
-delete
-'
+	content_resp 'Response\'s delete'
 FROM t_responses r
 	INNER JOIN t_threads t ON r.fk_thread = id_thread
 	INNER JOIN t_categories c ON t.fk_cat = id_cat
@@ -41,10 +47,17 @@ GROUP BY title_cat,
 	name_email, 
 	name_role;
 
--- Trouver toutes les infos dont on a besoin à partir d'un thread (son ID)
-SELECT title_section 'Section', title_cat 'Category', title_thread 'Thread', tu.nickname_user 'Thread\'s author',
+-- Trouver toutes les infos dont on a besoin à partir d'un thread (son ID)	
+SELECT title_section 'Section', 
+	title_cat 'Category', 
+	title_thread 'Thread', 
+	tu.nickname_user 'Thread\'s author', 
 	content_resp 'Response', 
-	ru.nickname_user 'Response\'s author', CONCAT(last_name_char, ' ', first_name_char) as 'Response\'s author\'s characters', name_email 'Response\'s author\'s email', name_role 'Response\'s author\'s role', GROUP_CONCAT(name_perm) 'Role\'s permissions'
+	ru.nickname_user 'Response\'s author',
+	CONCAT(last_name_char, ' ', first_name_char) as 'Response\'s author\'s characters', 
+	name_email 'Response\'s author\'s email', 
+	name_role 'Response\'s author\'s role', 
+	GROUP_CONCAT(name_perm) 'Role\'s permissions'
 FROM t_responses r
 	INNER JOIN t_threads t ON r.fk_thread = id_thread
 	INNER JOIN t_categories c ON t.fk_cat = id_cat
@@ -72,7 +85,10 @@ GROUP BY title_cat,
 	name_role;
 
 -- Trouver toutes les infos dont on a besoin à partir d'une catégorie (son ID)
-SELECT title_section 'Section', title_cat 'Category', title_thread 'Thread', tu.nickname_user 'Thread\'s author'
+SELECT title_section 'Section', 
+	title_cat 'Category', 
+	title_thread 'Thread', 
+	tu.nickname_user 'Thread\'s author'
 FROM t_threads t
 	INNER JOIN t_categories c ON t.fk_cat = id_cat
 	INNER JOIN t_sections s ON c.fk_section = id_section
@@ -83,9 +99,10 @@ GROUP BY title_cat,
 	title_thread, 
 	tu.nickname_user;
 	
--- Trouver toutes les infos dont on a besoin à partir d'une section (son ID)
-SELECT title_section 'Section', title_cat 'Category'
+-- Trouver toutes les infos dont on a besoin à partir d'une section (son ID)	
+SELECT title_section 'Section', 
+	title_cat 'Category'
 FROM t_categories c
-         INNER JOIN t_sections s ON c.fk_section = id_section
+	INNER JOIN t_sections s ON c.fk_section = id_section
 WHERE c.fk_section = 1
 GROUP BY title_cat;

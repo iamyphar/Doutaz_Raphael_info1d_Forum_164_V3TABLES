@@ -5,21 +5,17 @@
         <h1>Effacer un utilisateur</h1>
         <form action="" method="POST" novalidate>
             {{ form.hidden_tag() }}
+            {% if data_linked_threads %}
             <table class="table table-bordered table-sm">
-                {% if data_threads_linked %}
-                    <h5>Ce utilisateur est associé avec le(s) fils de discussions suivant :</h5>
-                {% else %}
-                    <h5>Ce utilisateur n'est associé à aucun fils de discussions.</h5>
-                {% endif %}
-                {% if data_threads_linked %}
+                <h5>Cet utilisateur est associé avec le/les fils de discussions suivant(s) :</h5>
                     <thead>
                     <tr>
                         <th>
-                            Titre du fils de discussions
+                            Titre
                         </th>
                     </tr>
                     </thead>
-                    {% for row in data_threads_linked %}
+                    {% for row in data_linked_threads %}
                         <tbody>
                         <tr>
                             <td>
@@ -28,10 +24,30 @@
                         </tr>
                         </tbody>
                     {% endfor %}
-                {% endif %}
             </table>
+            {% endif %}
 
-
+            {% if data_linked_resps %}
+            <table class="table table-bordered table-sm">
+                <h5>Cet utilisateur est associé avec la/les réponses suivante(s) :</h5>
+                    <thead>
+                    <tr>
+                        <th>
+                            Contenu
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for row in data_linked_resps %}
+                        <tbody>
+                        <tr>
+                            <td>
+                                {{ row.content_resp }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+            </table>
+            {% endif %}
             <div class="row">
                 <div class="col-md-6 form-group">
                     {{ form.nickname_user.label }}
@@ -92,13 +108,9 @@
                     <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </div>
-            {{ form.del_conf_btn(class="btn btn-info") }}
+            {{ form.submit_delete(class="btn btn-danger", formnovalidate=true) }}
 
-            {% if delete_btn %}
-                {{ form.del_final_btn(class="btn btn-danger") }}
-            {% endif %}
-
-            {{ form.cancel_btn(class="btn btn-primary") }}
+            {{ form.submit_cancel(class="btn btn-primary") }}
         </form>
     </div>
 {% endblock %}

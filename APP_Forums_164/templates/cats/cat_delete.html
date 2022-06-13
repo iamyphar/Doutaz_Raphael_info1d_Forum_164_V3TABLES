@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %} Effacer une catégorie {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <h1>Effacer une catégorie</h1>
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            {% if linked_data_threads %}
+                <table class="table table-bordered table-sm">
+                    <h5>Cette catégorie est associée avec le/les fils de discussions suivant(s) :</h5>
+                    <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            Titre
+                        </th>
+                        <th>
+                            Contenu
+                        </th>
+                        <th>
+                            Icône
+                        </th>
+                        <th>
+                            Épinglé
+                        </th>
+                        <th>
+                            Utilisateur (créateur)
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for row in linked_data_threads %}
+                        <tbody>
+                        <tr>
+                            <td>
+                                {{ row.id_thread }}
+                            </td>
+                            <td>
+                                {{ row.title_thread }}
+                            </td>
+                            <td>
+                                {{ row.content_thread }}
+                            </td>
+                            <td class="align-middle">
+                                <img class="img" src={{ row.icon_thread }} style="border: 0;display:block;width:150px;" alt="erreur à l'affichage de l'image">
+                            </td>
+                            <td>
+                                {% if row.pinned_thread == 1 %}
+                                    Oui
+                                {% else %}
+                                    Non
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ row.nickname_user }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            {% endif %}
+
+            {% if linked_data_cats %}
+                <table class="table table-bordered table-sm">
+                    <h5>Cette catégorie est associée avec la/les catégories suivante(s) :</h5>
+                    <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            Titre
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Icône
+                        </th>
+                        <th>
+                            Section
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for row in linked_data_cats %}
+                        <tbody>
+                        <tr>
+                            <td>
+                                {{ row.id_cat }}
+                            </td>
+                            <td>
+                                {{ row.title_cat }}
+                            </td>
+                            <td>
+                                {{ row.description_cat }}
+                            </td>
+                            <td class="align-middle">
+                                <img class="img" src={{ row.icon_cat }} style="border: 0;display:block;width:150px;" alt="erreur à l'affichage de l'image">
+                            </td>
+                            <td>
+                                {{ row.title_section }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            {% endif %}
+
+            <div class="form-group">
+                {{ form.title_cat.label }}
+                {{ form.title_cat(class_="form-control", readonly=true) }}
+                {% for error in form.title_cat.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.description_cat.label }}
+                {{ form.description_cat(class_="form-control", readonly=true) }}
+                {% for error in form.description_cat.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+
+            <div class="form-group">
+                {{ form.icon_cat.label }}
+                {{ form.icon_cat(class_="form-control", readonly=true) }}
+                {% for error in form.icon_cat.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    {{ form.fk_section_text.label }}
+                    {{ form.fk_section_text(class_="form-control", readonly=true) }}
+                    {% for error in form.fk_section_text.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.fk_cat_text.label }}
+                    {{ form.fk_cat_text(class_="form-control", readonly=true) }}
+                    {% for error in form.fk_cat_text.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form.submit_delete(class="btn btn-danger") }}
+
+            {{ form.submit_cancel(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock %}
+

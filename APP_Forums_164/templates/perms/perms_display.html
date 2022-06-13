@@ -42,12 +42,12 @@
                         {{ row.description_perm|default("", True) }}
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-warning" href="{{ url_for('perm_update', id_perm=row.id_perm) }}"
-                           perm="button">Modifier</a>
+                        <a class="btn btn-success" href="{{ url_for('perm_update', id_perm=row.id_perm) }}"
+                           perm="button"><i class="fa-solid fa-pen"></i></a>
                     </td>
                     <td class="text-center" class="align-middle">
                         <a class="btn btn-danger" href="{{ url_for('perm_delete', id_perm=row.id_perm) }}"
-                           perm="button">Supprimer</a>
+                           perm="button"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>
                 </tbody>

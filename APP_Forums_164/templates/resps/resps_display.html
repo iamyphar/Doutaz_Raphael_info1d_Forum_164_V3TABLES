@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %} Catégories {% endblock %}
+{% block title %} Réponses {% endblock %}
 {% block body %}
     <div class="container py-5">
         <div class="d-sm-flex justify-content-between align-items-center">
-            <h1>Catégories</h1>
-            <div><a class="btn btn-primary" href="{{ url_for('category_add') }}" cat="button">Ajouter</a></div>
+            <h1>Réponses</h1>
+            <div><a class="btn btn-primary" href="{{ url_for('resp_add') }}" resp="button">Ajouter</a></div>
         </div>
         <table class="table table-bordered table-sm">
             {% if data %}
@@ -14,16 +14,13 @@
                         ID
                     </th>
                     <th class="align-middle">
-                        Titre
+                        Contenu
                     </th>
                     <th class="align-middle">
-                        Description
+                        Fils de discussions
                     </th>
                     <th class="align-middle">
-                        Icône
-                    </th>
-                    <th class="align-middle">
-                        Section
+                        Utilisateur (créateur)
                     </th>
                     <th class="align-middle">
 
@@ -39,35 +36,30 @@
                 <tbody>
                 <tr>
                     <td class="align-middle">
-                        {{ row.id_cat }}
+                        {{ row.id_resp }}
                     </td>
                     <td class="align-middle">
-                        {{ row.title_cat }}
+                        {{ row.content_resp|default("", True) }}
                     </td>
                     <td class="align-middle">
-                        {{ row.description_cat|default("", True) }}
+                        {{ row.title_thread }}
                     </td>
                     <td class="align-middle">
-                        <img class="img" src={{ row.icon_char }} style="border: 0;display:block;width:150px;
-                             max-height:auto" alt="erreur à l'affichage de l'image">
-                    </td>
-                    <td class="align-middle">
-                        {{ row.title_section|default("", True) }}
+                        {{ row.nickname_user }}
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-warning" href="{{ url_for('category_update', id_cat=row.id_cat) }}"
-                           cat="button">Modifier</a>
+                        <a class="btn btn-success" href="{{ url_for('resp_update', id_resp=row.id_resp) }}"
+                           resp="button"><i class="fa-solid fa-pen"></i></a>
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-danger" href="{{ url_for('category_delete', id_cat=row.id_cat) }}"
-                           cat="button">Supprimer</a>
+                        <a class="btn btn-danger" href="{{ url_for('resp_delete', id_resp=row.id_resp) }}"
+                           resp="button"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>
                 </tbody>
             {% else %}
-                <h4>Aucune catégorie.</h4>
+                <h4>Aucune réponse.</h4>
             {% endfor %}
         </table>
     </div>
 {% endblock %}
-

@@ -2,17 +2,13 @@
 File : gestion_chars_crud.py
 Author : Raphaël Doutaz 09.05.22
 """
+from datetime import date
 from pathlib import Path
 
 from APP_Forums_164.database.database_tools import DBconnection
-from flask import redirect
-from flask import request
-from flask import session
-from flask import url_for
+from flask import redirect, request, session, url_for
 
-from APP_Forums_164.chars.gestion_chars_forms import FormAddChar
-from APP_Forums_164.chars.gestion_chars_forms import FormDeleteChar
-from APP_Forums_164.chars.gestion_chars_forms import FormUpdateChar
+from APP_Forums_164.chars.gestion_chars_forms import FormChar
 from APP_Forums_164.erreurs.exceptions import *
 
 """
@@ -22,49 +18,42 @@ from APP_Forums_164.erreurs.exceptions import *
     Test : ex : http://127.0.0.1:5005/chars_display
     
     Settings :  order_by : ASC : Ascendant, DESC : Descendant
-                id_char_sel = 0 >> all characters.
-                id_char_sel = "n" display characters who id is "n"
+                id_char = 0 >> all characters.
+                id_char = "n" display characters who id is "n"
 """
 
 
-@app.route("/chars_display/<string:order_by>/<int:id_char_sel>", methods=['GET', 'POST'])
-def chars_display(order_by, id_char_sel):
+@app.route("/chars_display/<string:order_by>/<int:id_char>", methods=['GET', 'POST'])
+def chars_display(order_by, id_char):
     if request.method == "GET":
         try:
             with DBconnection() as mc_display:
-                if order_by == "ASC" and id_char_sel == 0:
-                    strsql_chars_display = """SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char FROM t_characters ORDER BY last_name_char ASC"""
-                    mc_display.execute(strsql_chars_display)
+                if order_by == "ASC" and id_char == 0:
+                    mc_display.execute("""SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char, GROUP_CONCAT(nickname_user) as nickname_user FROM t_characters INNER JOIN t_users_have_characters ON id_char = fk_char INNER JOIN t_users ON id_user = fk_user GROUP BY id_char ORDER BY id_char ASC""")
                 elif order_by == "ASC":
-                    select_dictionary = {"id_char_selected": id_char_sel}
-                    strsql_chars_display = """SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char FROM t_characters WHERE id_char = %(id_char_selected)s"""
-
-                    mc_display.execute(strsql_chars_display, select_dictionary)
+                    mc_display.execute("""SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char, GROUP_CONCAT(nickname_user) as nickname_user FROM t_characters INNER JOIN t_users_have_characters ON id_char = fk_char INNER JOIN t_users ON id_user = fk_user WHERE id_char = %(id_charected)s GROUP BY id_char ORDER BY id_char ASC""",
+                                       {"id_charected": id_char}
+                                       )
                 else:
-                    strsql_chars_display = """SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char FROM t_characters  ORDER BY id_char DESC"""
+                    mc_display.execute("""SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char, GROUP_CONCAT(nickname_user) as nickname_user FROM t_characters INNER JOIN t_users_have_characters ON id_char = fk_char INNER JOIN t_users ON id_user = fk_user GROUP BY id_char ORDER BY id_char DESC""")
 
-                    mc_display.execute(strsql_chars_display)
+                data = mc_display.fetchall()
 
-                data_chars = mc_display.fetchall()
+                print("Data characters : ", data)
 
-                print("Data characters : ", data_chars, " Type : ", type(data_chars))
-
-                # If table is empty
-                if not data_chars and id_char_sel == 0:
+                if not data and id_char == 0:
                     flash("""La table "t_characters" est vide.""", "warning")
-                elif not data_chars and id_char_sel > 0:
-                    # If no characters with id = id_char_sel found
+                elif not data and id_char > 0:
                     flash(f"Le personnage que vous avez demandé n'existe pas.", "warning")
                 else:
-                    # In all others cases, this means the table is empty.
                     flash(f"Les données des personnages ont été affichées !", "success")
 
-        except Exception as Exception_chars_display:
-            raise ExceptionCharsDisplay(f"file : {Path(__file__).name}  ;  "
+        except Exception as exception_pass:
+            raise ExceptionPass(f"file : {Path(__file__).name}  ;  "
                                         f"{chars_display.__name__} ; "
-                                        f"{Exception_chars_display}")
+                                        f"{exception_pass}")
 
-    return render_template("chars/chars_display.html", data=data_chars)
+    return render_template("chars/chars_display.html", data=data)
 
 
 """
@@ -75,37 +64,50 @@ def chars_display(order_by, id_char_sel):
     
     Settings : -
     
-    Goal : Add a characters
+    Goal : Add a character
 """
 
 
 @app.route("/char_add", methods=['GET', 'POST'])
 def char_add():
-    form = FormAddChar()
+    form = FormChar()
+    with DBconnection() as mybd_conn:
+        mybd_conn.execute("SELECT id_user, nickname_user FROM t_users ORDER BY nickname_user")
+    data = mybd_conn.fetchall()
+    data.insert(0, {'id_user': 'None', 'nickname_user': 'Aucun'})
+    form.fk_user.choices = [(i["id_user"], i["nickname_user"]) for i in data]
+
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                insertion_dictionary = {"first_name_char": form.first_name_char.data,
+                form.fk_user.data = None if form.fk_user.data == 'None' else form.fk_user.data
+
+                with DBconnection() as mconn_bd:
+                    mconn_bd.execute("""INSERT INTO t_characters (id_char,last_name_char, first_name_char, bio_char, birthdate_char, icon_char) VALUES (NULL,%(first_name_char)s,%(last_name_char)s,%(bio_char)s,%(birthdate_char)s,%(icon_char)s) """,
+                                     {
+                                        "first_name_char": form.first_name_char.data,
                                         "last_name_char": form.last_name_char.data,
                                         "bio_char": form.bio_char.data,
                                         "birthdate_char": form.birthdate_char.data,
-                                        "icon_char": form.icon_char.data}
-                print("Dictionary : ", insertion_dictionary)
-
-                strsql_insert_char = """INSERT INTO t_characters (id_char,last_name_char, first_name_char, bio_char, birthdate_char, icon_char) VALUES (NULL,%(first_name_char)s,%(last_name_char)s,%(bio_char)s,%(birthdate_char)s,%(icon_char)s) """
-
-                with DBconnection() as mconn_bd:
-                    mconn_bd.execute(strsql_insert_char, insertion_dictionary)
+                                        "icon_char": form.icon_char.data
+                                     }
+                                     )
+                    mconn_bd.execute("""INSERT INTO t_users_have_characters (id_user_has_char, fk_user, fk_char, add_date_user_has_char) VALUES (NULL, %(fk_user)s, %(fk_char)s,%(date)s)""",
+                                     {
+                                         'fk_user': form.fk_user.data,
+                                         'fk_char': mconn_bd.lastrowid,
+                                         'date': date.today()
+                                     })
 
                 flash(f"Les données ont été insérées !", "success")
                 print(f"Data inserted !")
 
-                return redirect(url_for('chars_display', order_by='DESC', id_char_sel=0))
+                return redirect(url_for('chars_display', order_by='ASC', id_char=0))
 
-        except Exception as Exception_char_add:
-            raise ExceptionCharAdd(f"file : {Path(__file__).name}  ;  "
+        except Exception as exception_pass:
+            raise ExceptionPass(f"file : {Path(__file__).name}  ;  "
                                    f"{char_add.__name__} ; "
-                                   f"{Exception_char_add}")
+                                   f"{exception_pass}")
 
     return render_template("chars/char_add.html", form=form)
 
@@ -118,55 +120,59 @@ def char_add():
     
     Settings : -
     
-    Goal : Update a characters who has been selected in /chars_display
+    Goal : Update a character who has been selected in /chars_display
 """
 
 
-@app.route("/char_update", methods=['GET', 'POST'])
-def char_update():
-    id_char = request.values['id_char']
+@app.route("/char_update/<int:id_char>", methods=['GET', 'POST'])
+def char_update(id_char):
+    form = FormChar()
+    with DBconnection() as mybd_conn:
+        mybd_conn.execute("SELECT id_user, nickname_user FROM t_users ORDER BY nickname_user")
+    data = mybd_conn.fetchall()
+    data.insert(0, {'id_user': 'None', 'nickname_user': 'Aucun'})
+    form.fk_user.choices = [(i["id_user"], i["nickname_user"]) for i in data]
 
-    form = FormUpdateChar()
     try:
-        print(" on submit ", form.validate_on_submit())
         if form.validate_on_submit():
-            update_dictionary = {"id_char": id_char,
-                                 "first_name_char": form.first_name_char.data,
-                                 "last_name_char": form.last_name_char.data,
-                                 "bio_char": form.bio_char.data,
-                                 "birthdate_char": form.birthdate_char.data,
-                                 "icon_char": form.icon_char.data
-                                 }
-            print("Dictionnary : ", update_dictionary)
-
-            strsql_update_char = """UPDATE t_characters SET first_name_char = %(first_name_char)s, last_name_char = %(last_name_char)s, bio_char = %(bio_char)s, birthdate_char = %(birthdate_char)s, icon_char = %(icon_char)s WHERE id_char = %(id_char)s;"""
             with DBconnection() as mconn_bd:
-                mconn_bd.execute(strsql_update_char, update_dictionary)
+                form.fk_user.data = None if form.fk_user.data == 'None' else form.fk_user.data
+
+                mconn_bd.execute("""UPDATE t_characters SET first_name_char = %(first_name_char)s, last_name_char = %(last_name_char)s, bio_char = %(bio_char)s, birthdate_char = %(birthdate_char)s, icon_char = %(icon_char)s WHERE id_char = %(id_char)s;
+                                    UPDATE t_users_have_characters SET fk_user = %(fk_user)s, fk_char = %(id_char)s WHERE fk_char = %(id_char)s""",
+                                 {
+                                    "id_char": id_char,
+                                    "first_name_char": form.first_name_char.data,
+                                    "last_name_char": form.last_name_char.data,
+                                    "bio_char": form.bio_char.data,
+                                    "birthdate_char": form.birthdate_char.data,
+                                    "icon_char": form.icon_char.data,
+                                    "fk_user": form.fk_user.data
+                                })
 
             flash(f"Les données ont été mises à jour !", "success")
             print(f"Data updated !")
 
-            return redirect(url_for('chars_display', order_by="ASC", id_char_sel=id_char))
+            return redirect(url_for('chars_display', order_by="ASC", id_char=id_char))
         elif request.method == "GET":
-            strsql_id_char = "SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char FROM t_characters WHERE id_char = %(id_char)s"
-            select_dictionary = {"id_char": id_char}
             with DBconnection() as mybd_conn:
-                mybd_conn.execute(strsql_id_char, select_dictionary)
-            data_char = mybd_conn.fetchone()
-            print("Data characters ", data_char, " type ", type(data_char), " char ",
-                  data_char["first_name_char"], data_char["last_name_char"], data_char["bio_char"],
-                  data_char["birthdate_char"])
+                mybd_conn.execute("SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char , GROUP_CONCAT(fk_user) as fk_user FROM t_characters INNER JOIN t_users_have_characters ON id_char = fk_char WHERE id_char = %(id_char)s GROUP BY id_char",
+                                  {"id_char": id_char})
+            data = mybd_conn.fetchone()
+            print("Data characters ", data)
 
-            form.last_name_char.data = data_char["last_name_char"]
-            form.first_name_char.data = data_char["first_name_char"]
-            form.bio_char.data = data_char["bio_char"]
-            form.birthdate_char.data = data_char["birthdate_char"]
-            form.icon_char.data = data_char["icon_char"]
+            form.last_name_char.default = data["last_name_char"]
+            form.first_name_char.default = data["first_name_char"]
+            form.bio_char.default = data["bio_char"]
+            form.birthdate_char.default = data["birthdate_char"]
+            form.icon_char.default = data["icon_char"]
+            form.fk_user.default = data["fk_user"]
+            form.process()
 
-    except Exception as Exception_char_update:
-        raise ExceptionCharUpdate(f"file : {Path(__file__).name}  ;  "
+    except Exception as exception_pass:
+        raise ExceptionPass(f"file : {Path(__file__).name}  ;  "
                                   f"{char_update.__name__} ; "
-                                  f"{Exception_char_update}")
+                                  f"{exception_pass}")
 
     return render_template("chars/char_update.html", form=form)
 
@@ -179,84 +185,45 @@ def char_update():
     
     Settings : -
     
-    Goal : Delete a characters who has been selected in /chars_display
+    Goal : Delete a character who has been selected in /chars_display
 """
 
 
-@app.route("/char_delete", methods=['GET', 'POST'])
-def char_delete():
-    data_delete = None
-    delete_btn = None
-    id_char = request.values['id_char']
-
-    form = FormDeleteChar()
+@app.route("/char_delete/<int:id_char>", methods=['GET', 'POST'])
+def char_delete(id_char):
+    form = FormChar()
     try:
-        print(" on submit ", form.validate_on_submit())
+        form.fk_user.choices = [('', '')]
         if request.method == "POST" and form.validate_on_submit():
+            if form.submit_cancel.data:
+                return redirect(url_for("chars_display", order_by="ASC", id_char=0))
 
-            if form.cancel_btn.data:
-                return redirect(url_for("chars_display", order_by="ASC", id_char_sel=0))
-
-            if form.del_conf_btn.data:
-                data_delete = session['data_delete']
-                print("Data to delete ", data_delete)
-
-                flash(f"Supprimer le personnage définitivement ?", "danger")
-                delete_btn = True
-
-            if form.del_final_btn.data:
-                delete_dictionary = {"id_char": id_char}
-                print("Dictionary : ", delete_dictionary)
-
-                strsql_delete_users_have_char = """DELETE FROM t_users_have_characters WHERE fk_char = %(id_char)s"""
-                strsql_delete_id_char = """DELETE FROM t_characters WHERE id_char = %(id_char)s"""
+            if form.submit_delete.data:
                 with DBconnection() as mconn_bd:
-                    mconn_bd.execute(strsql_delete_users_have_char, delete_dictionary)
-                    mconn_bd.execute(strsql_delete_id_char, delete_dictionary)
-
+                    mconn_bd.execute("""DELETE FROM t_users_have_characters WHERE fk_char = %(id_char)s;DELETE FROM t_characters WHERE id_char = %(id_char)s""", {"id_char": id_char})
                 flash(f"Le personnage a été supprimé !", "success")
                 print(f"Characters deleted.")
 
-                return redirect(url_for('chars_display', order_by="ASC", id_char_sel=0))
+                return redirect(url_for('chars_display', order_by="ASC", id_char=0))
 
         if request.method == "GET":
-            select_dictionary = {"id_char": id_char}
-            print(id_char, type(id_char))
-
-            strsql_users_have_chars_delete = """SELECT id_user_has_char, nickname_user, id_char, id_user FROM t_users u
-                                            LEFT JOIN t_users_have_characters ur ON u.id_user = ur.fk_user
-                                            LEFT JOIN t_characters r ON ur.fk_char = r.id_char
-                                            WHERE ur.fk_char = %(id_char)s"""
-
             with DBconnection() as mydb_conn:
-                mydb_conn.execute(strsql_users_have_chars_delete, select_dictionary)
-                data_delete = mydb_conn.fetchall()
-                print("Data to delete : ", data_delete)
+                mydb_conn.execute("SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char , GROUP_CONCAT(nickname_user) as nickname_user FROM t_characters INNER JOIN t_users_have_characters ON id_char = fk_char INNER JOIN t_users ON id_user = fk_user GROUP BY id_char",
+                                  {"id_char": id_char})
+                data = mydb_conn.fetchone()
+                print("Data character ", data)
 
-                session['data_delete'] = data_delete
+            form.last_name_char.data = data["last_name_char"]
+            form.first_name_char.data = data["first_name_char"]
+            form.bio_char.data = data["bio_char"]
+            form.birthdate_char.data = data["birthdate_char"]
+            form.icon_char.data = data["icon_char"]
+            form.fk_user_text.data = data["nickname_user"]
 
-                strsql_id_char = "SELECT id_char, last_name_char, first_name_char, bio_char, birthdate_char, icon_char FROM t_characters WHERE id_char = %(id_char)s"
-
-                mydb_conn.execute(strsql_id_char, select_dictionary)
-                data_name_char = mydb_conn.fetchone()
-                print("Data character ", data_name_char, " type ", type(data_name_char), " char ",
-                      data_name_char["last_name_char"], data_name_char["first_name_char"], data_name_char["bio_char"],
-                      data_name_char["birthdate_char"])
-
-            form.last_name_char.data = data_name_char["last_name_char"]
-            form.first_name_char.data = data_name_char["first_name_char"]
-            form.bio_char.data = data_name_char["bio_char"]
-            form.birthdate_char.data = data_name_char["birthdate_char"]
-            form.icon_char.data = data_name_char["icon_char"]
-
-            delete_btn = False
-
-    except Exception as Exception_char_delete:
-        raise ExceptionCharDelete(f"file : {Path(__file__).name}  ;  "
+    except Exception as exception_pass:
+        raise ExceptionPass(f"file : {Path(__file__).name}  ;  "
                                   f"{char_delete.__name__} ; "
-                                  f"{Exception_char_delete}")
+                                  f"{exception_pass}")
 
     return render_template("chars/char_delete.html",
-                           form=form,
-                           delete_btn=delete_btn,
-                           data_users_linked=data_delete)
+                           form=form)

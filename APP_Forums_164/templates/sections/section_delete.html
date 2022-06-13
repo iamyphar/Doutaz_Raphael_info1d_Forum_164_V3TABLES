@@ -5,13 +5,9 @@
         <h1>Effacer un section</h1>
         <form action="" method="POST" novalidate>
             {{ form.hidden_tag() }}
+            {% if data_linked %}
             <table class="table table-bordered table-sm">
-                {% if data_cats_linked %}
-                    <h5>Ce section est associé avec la/les catégories suivante(s) :</h5>
-                {% else %}
-                    <h5>Ce section n'est associé à aucune catégorie.</h5>
-                {% endif %}
-                {% if data_cats_linked %}
+                <h5>Ce section est associé avec la/les catégories suivante(s) :</h5>
                     <thead>
                     <tr>
                         <th>
@@ -25,7 +21,7 @@
                         </th>
                     </tr>
                     </thead>
-                    {% for row in data_cats_linked %}
+                    {% for row in data_linked %}
                         <tbody>
                         <tr>
                             <td>
@@ -40,9 +36,8 @@
                         </tr>
                         </tbody>
                     {% endfor %}
-                {% endif %}
             </table>
-
+            {% endif %}
 
             <div class="form-group">
                 {{ form.title_section.label }}
@@ -59,13 +54,9 @@
                     <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </div>
-            {{ form.del_conf_btn(class="btn btn-info") }}
+            {{ form.submit_delete(class="btn btn-danger") }}
 
-            {% if delete_btn %}
-                {{ form.del_final_btn(class="btn btn-danger") }}
-            {% endif %}
-
-            {{ form.cancel_btn(class="btn btn-primary") }}
+            {{ form.submit_cancel(class="btn btn-primary") }}
         </form>
     </div>
 {% endblock %}

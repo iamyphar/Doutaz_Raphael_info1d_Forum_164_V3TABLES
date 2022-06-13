@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %} Effacer une réponse {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <h1>Effacer une réponse</h1>
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.content_resp.label }}
+                {{ form.content_resp(class_="form-control", readonly=true) }}
+                {% for error in form.content_resp.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    {{ form.fk_user_text.label }}
+                    {{ form.fk_user_text(class_="form-control", readonly=true) }}
+                    {% for error in form.fk_user_text.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.fk_thread_text.label }}
+                    {{ form.fk_thread_text(class_="form-control", readonly=true) }}
+                    {% for error in form.fk_thread_text.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="d-flex align-items-center mt-5">
+                <div>
+                    {{ form.submit_delete(class="btn btn-danger") }}
+                    {{ form.submit_cancel(class="btn btn-primary") }}
+                </div>
+
+                <div class="col-md-6 form-group">
+                    {{ form.fk_user_author.label }}
+                    {{ form.fk_user_author(class_="custom-select") }}
+                    {% for error in form.fk_user_author.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

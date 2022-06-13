@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %} Ajouter une réponse {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <h1>Ajouter une réponse</h1>
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.content_resp.label }}
+                {{ form.content_resp(class_="form-control") }}
+                {% for error in form.content_resp.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    {{ form.fk_user.label }}
+                    {{ form.fk_user(class_="custom-select") }}
+                    {% for error in form.fk_user.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.fk_thread.label }}
+                    {{ form.fk_thread(class_="custom-select") }}
+                    {% for error in form.fk_thread.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock %}
+

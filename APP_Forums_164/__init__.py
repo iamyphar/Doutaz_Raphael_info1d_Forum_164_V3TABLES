@@ -39,15 +39,17 @@ try:
         Dans l'application les lignes ci-dessous doivent se trouver ici... soit après l'instanciation de la classe "Flask"
     """
     from APP_Forums_164.database import database_tools
-    from APP_Forums_164.roles import gestion_roles_crud
+    from APP_Forums_164.roles import gestion_roles_crud, gestion_users_have_roles_crud
     from APP_Forums_164.chars import gestion_chars_crud
     from APP_Forums_164.chars import gestion_chars_forms
     from APP_Forums_164.sections import gestion_sections_crud
     from APP_Forums_164.sections import gestion_sections_forms
-    from APP_Forums_164.categories import gestion_categories_crud
-    from APP_Forums_164.categories import gestion_categories_forms
+    from APP_Forums_164.cats import gestion_cats_crud
+    from APP_Forums_164.cats import gestion_cats_forms
     from APP_Forums_164.threads import gestion_threads_crud
     from APP_Forums_164.threads import gestion_threads_forms
+    from APP_Forums_164.resps import gestion_resps_crud
+    from APP_Forums_164.resps import gestion_resps_forms
     from APP_Forums_164.perms import gestion_perms_crud
     from APP_Forums_164.perms import gestion_perms_forms
     from APP_Forums_164.home import home
@@ -55,7 +57,6 @@ try:
     from APP_Forums_164.erreurs import msg_avertissements
 
     from APP_Forums_164.users import gestion_users_crud
-    from APP_Forums_164.users import gestion_users_have_roles_crud
     from APP_Forums_164.chars import gestion_users_have_chars_crud
     from APP_Forums_164.perms import gestion_roles_have_perms_crud
     from APP_Forums_164.users import gestion_users_forms
