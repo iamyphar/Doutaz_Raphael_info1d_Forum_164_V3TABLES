@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %} Update roles user has {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='tags-selector-tagselect/jquery.tagselect.css') }}">
+    <script src="{{ url_for('static', filename='tags-selector-tagselect/jquery.tagselect.js') }}"></script>
+{% endblock %}
+{% block body %}
+
+    <style>
+        ol, ul, li {
+            list-style: none;
+        }
+    </style>
+
+
+    <div class="container py-5">
+        <table class="table table-responsive-sm">
+            {% if user %}
+                <thead>
+                <tr>
+                    <th class="align-middle">
+                        ID
+                    </th>
+                    <th class="align-middle">
+                        Nom d'utilisateur
+                    </th>
+                    <th class="align-middle">
+                        Adresse email
+                    </th>
+                    <th class="align-middle">
+                        Biographie
+                    </th>
+                    <th class="align-middle">
+                        Signature
+                    </th>
+                    <th class="align-middle">
+                        Discord
+                    </th>
+                    <th class="align-middle">
+                        Steam
+                    </th>
+                    <th class="align-middle">
+                        Photo de profil
+                    </th>
+                    <th class="align-middle">
+                        Date de création
+                    </th>
+                </tr>
+                </thead>
+            {% endif %}
+
+            {% for row in user %}
+                <tbody>
+                <tr>
+                    <td class="align-middle">
+                        {{ row.id_user }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.nickname_user }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.name_email }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.bio_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.signature_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.discord_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.steam_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        <img class="img" src={{ row.icon_user }} style="border: 0;display:block;width:75px;
+                             max-height:auto" alt="erreur à l'affichage de l'image">
+                    </td>
+                    <td class="align-middle">
+                        {{ row.registration_date_user }}
+                    </td>
+                </tr>
+                </tbody>
+            {% else %}
+                <h4>Aucun personnage.</h4>
+            {% endfor %}
+        </table>
+    </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="d-flex">
+            <form id="form_tags_select_confirm" action="{{ url_for('update_roles_user_had') }}" method="POST"
+                  class="p-3">
+                <div class="qtagselect w-360px">
+                    <select id="tag_selector" name="select_tags" class="qtagselect__select" multiple>
+                        {% for row in roles_user_has_not %}
+                            <option value="{{ row.id_role }}" name="roles_user_has_not"
+                                    class="color-blue">{{ row.name_role }}</option>
+                        {% endfor %}
+
+                        {% for row in roles_user_has %}
+                            <option value="{{ row.id_role }}" name="roles_user_has" class="color-purple"
+                                    selected>{{ row.name_role }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+            <div class="p-3">
+                <input type="submit" form="form_tags_select_confirm" class="btn btn-warning" value="Modifier">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $('.qtagselect__select').tagselect({
+            'maxTag': 100,
+            'tagMessage': '100 tags maximum !'
+        });
+    </script>
+{% endblock %}

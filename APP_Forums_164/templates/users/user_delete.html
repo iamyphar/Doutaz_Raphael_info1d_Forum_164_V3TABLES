@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %} Effacer un utilisateur {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <h1>Effacer un utilisateur</h1>
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <table class="table table-bordered table-sm">
+                {% if data_threads_linked %}
+                    <h5>Ce utilisateur est associé avec le(s) fils de discussions suivant :</h5>
+                {% else %}
+                    <h5>Ce utilisateur n'est associé à aucun fils de discussions.</h5>
+                {% endif %}
+                {% if data_threads_linked %}
+                    <thead>
+                    <tr>
+                        <th>
+                            Titre du fils de discussions
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for row in data_threads_linked %}
+                        <tbody>
+                        <tr>
+                            <td>
+                                {{ row.title_thread }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                {% endif %}
+            </table>
+
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    {{ form.nickname_user.label }}
+                    {{ form.nickname_user(class_="form-control", readonly=true) }}
+                    {% for error in form.nickname_user.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.password_user.label }}
+                    {{ form.password_user(class_="form-control", type_="password", readonly=true) }}
+                    {% for error in form.password_user.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.name_email.label }}
+                    {{ form.name_email(class_="form-control", readonly=true) }}
+                    {% for error in form.name_email.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.icon_user.label }}
+                    {{ form.icon_user(class_="form-control", readonly=true) }}
+                    {% for error in form.icon_user.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.discord_user.label }}
+                    {{ form.discord_user(class_="form-control", readonly=true) }}
+                    {% for error in form.discord_user.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.steam_user.label }}
+                    {{ form.steam_user(class_="form-control", readonly=true) }}
+                    {% for error in form.steam_user.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form.bio_user.label }}
+                {{ form.bio_user(class_="form-control", readonly=true) }}
+                {% for error in form.bio_user.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.signature_user.label }}
+                {{ form.signature_user(class_="form-control", readonly=true) }}
+                {% for error in form.signature_user.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            {{ form.del_conf_btn(class="btn btn-info") }}
+
+            {% if delete_btn %}
+                {{ form.del_final_btn(class="btn btn-danger") }}
+            {% endif %}
+
+            {{ form.cancel_btn(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock %}
+

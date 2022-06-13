@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %} Personnages {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <div class="d-sm-flex justify-content-between align-items-center">
+            <h1>Personnages</h1>
+            <div><a class="btn btn-primary" href="{{ url_for('char_add') }}" char="button">Ajouter</a></div>
+        </div>
+        <table class="table table-bordered table-sm">
+            {% if data %}
+                <thead>
+                <tr>
+                    <th class="align-middle">
+                        ID
+                    </th>
+                    <th class="align-middle">
+                        Nom
+                    </th>
+                    <th class="align-middle">
+                        Prénom
+                    </th>
+                    <th class="align-middle">
+                        Biographie
+                    </th>
+                    <th class="align-middle">
+                        Date de naissance
+                    </th>
+                    <th class="align-middle">
+                        Photo de profil
+                    </th>
+                    <th class="align-middle">
+
+                    </th>
+                    <th class="align-middle">
+
+                    </th>
+                </tr>
+                </thead>
+            {% endif %}
+
+            {% for row in data %}
+                <tbody>
+                <tr>
+                    <td class="align-middle">
+                        {{ row.id_char }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.last_name_char }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.first_name_char }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.bio_char|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.birthdate_char|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        <img class="img" src={{ row.icon_char }} style="border: 0;display:block;width:150px;
+                             max-height:auto" alt="erreur à l'affichage de l'image">
+                    </td>
+                    <td class="text-center" class="align-middle">
+                        <a class="btn btn-warning" href="{{ url_for('char_update', id_char=row.id_char) }}"
+                           char="button">Modifier</a>
+                    </td>
+                    <td class="text-center" class="align-middle">
+                        <a class="btn btn-danger" href="{{ url_for('char_delete', id_char=row.id_char) }}"
+                           char="button">Supprimer</a>
+                    </td>
+                </tr>
+                </tbody>
+            {% else %}
+                <h4>Aucun personnage.</h4>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

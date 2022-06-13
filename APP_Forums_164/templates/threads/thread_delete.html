@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %} Effacer un fils un discussions {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <h1>Effacer un fils un discussions</h1>
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <table class="table table-bordered table-sm">
+                {% if data_users_linked %}
+                    <h5>Ce fils un discussions est associé avec l'utilisateur suivant :</h5>
+                {% else %}
+                    <h5>Ce fils un discussions n'est associé à aucun utilisateur.</h5>
+                {% endif %}
+                {% if data_users_linked %}
+                    <thead>
+                    <tr>
+                        <th>
+                            Nom d'utilisateur
+                        </th>
+                    </tr>
+                    </thead>
+                    {% for row in data_users_linked %}
+                        <tbody>
+                        <tr>
+                            <td>
+                                {{ row.nickname_user }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                {% endif %}
+            </table>
+
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    {{ form.title_thread.label }}
+                    {{ form.title_thread(class_="form-control", readonly=true) }}
+                    {% for error in form.title_thread.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.fk_cat.label }}
+                    {{ form.fk_cat(class_="form-control", readonly=true) }}
+                    {% for error in form.fk_cat.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form.content_thread.label }}
+                {{ form.content_thread(class_="form-control", readonly=true) }}
+                {% for error in form.content_thread.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    {{ form.pinned_thread.label }}
+                    {{ form.pinned_thread(class_="form-control", readonly=true) }}
+                    {% for error in form.pinned_thread.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 form-group">
+                    {{ form.icon_thread.label }}
+                    {{ form.icon_thread(class_="form-control", readonly=true) }}
+                    {% for error in form.icon_thread.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form.del_conf_btn(class="btn btn-info") }}
+
+            {% if delete_btn %}
+                {{ form.del_final_btn(class="btn btn-danger") }}
+            {% endif %}
+
+            {{ form.cancel_btn(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock %}
+

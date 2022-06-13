@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %} Fils un discussionss {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <div class="d-sm-flex justify-content-between align-items-center">
+            <h1>Fils un discussions</h1>
+            <div><a class="btn btn-primary" href="{{ url_for('thread_add') }}" thread="button">Ajouter</a></div>
+        </div>
+        <table class="table table-bordered table-sm">
+            {% if data %}
+                <thead>
+                <tr>
+                    <th class="align-middle">
+                        ID
+                    </th>
+                    <th class="align-middle">
+                        Nom
+                    </th>
+                    <th class="align-middle">
+                        Prénom
+                    </th>
+                    <th class="align-middle">
+                        Biographie
+                    </th>
+                    <th class="align-middle">
+                        Date de naissance
+                    </th>
+                    <th class="align-middle">
+                        Photo de profil
+                    </th>
+                    <th class="align-middle">
+
+                    </th>
+                    <th class="align-middle">
+
+                    </th>
+                </tr>
+                </thead>
+            {% endif %}
+
+            {% for row in data %}
+                <tbody>
+                <tr>
+                    <td class="align-middle">
+                        {{ row.id_thread }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.title_thread }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.fk_cat }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.content_thread|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.pinned_thread|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        <img class="img" src={{ row.icon_thread }} style="border: 0;display:block;width:150px;
+                             max-height:auto" alt="erreur à l'affichage de l'image">
+                    </td>
+                    <td class="text-center" class="align-middle">
+                        <a class="btn btn-warning" href="{{ url_for('thread_update', id_thread=row.id_thread) }}"
+                           thread="button">Modifier</a>
+                    </td>
+                    <td class="text-center" class="align-middle">
+                        <a class="btn btn-danger" href="{{ url_for('thread_delete', id_thread=row.id_thread) }}"
+                           thread="button">Supprimer</a>
+                    </td>
+                </tr>
+                </tbody>
+            {% else %}
+                <h4>Aucun fils un discussions.</h4>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

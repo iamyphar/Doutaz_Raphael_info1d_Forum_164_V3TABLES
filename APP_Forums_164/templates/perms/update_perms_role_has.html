@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %} Update perms role has {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='tags-selector-tagselect/jquery.tagselect.css') }}">
+    <script src="{{ url_for('static', filename='tags-selector-tagselect/jquery.tagselect.js') }}"></script>
+{% endblock %}
+{% block body %}
+
+    <style>
+        ol, ul, li {
+            list-style: none;
+        }
+    </style>
+
+
+    <div class="container py-5">
+        <table class="table table-responsive-sm">
+            {% if role %}
+                <thead>
+                <tr>
+                    <th class="align-middle">
+                        ID
+                    </th>
+                    <th class="align-middle">
+                        Nom
+                    </th>
+                </tr>
+                </thead>
+            {% endif %}
+
+            {% for row in role %}
+                <tbody>
+                <tr>
+                    <td class="align-middle">
+                        {{ row.id_role }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.name_role }}
+                    </td>
+                </tr>
+                </tbody>
+            {% else %}
+                <h4>Aucune permission.</h4>
+            {% endfor %}
+        </table>
+    </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="d-flex">
+            <form id="form_tags_select_confirm" action="{{ url_for('update_perms_role_had') }}" method="POST"
+                  class="p-3">
+                <div class="qtagselect w-360px">
+                    <select id="tag_selector" name="select_tags" class="qtagselect__select" multiple>
+                        {% for row in perms_role_has_not %}
+                            <option value="{{ row.id_perm }}" name="perms_role_has_not"
+                                    class="color-blue">{{ row.name_perm }}</option>
+                        {% endfor %}
+
+                        {% for row in perms_role_has %}
+                            <option value="{{ row.id_perm }}" name="perms_role_has" class="color-purple"
+                                    selected>{{ row.name_perm }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+            <div class="p-3">
+                <input type="submit" form="form_tags_select_confirm" class="btn btn-warning" value="Modifier">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $('.qtagselect__select').tagselect({
+            'maxTag': 100,
+            'tagMessage': '100 tags maximum !'
+        });
+    </script>
+{% endblock %}

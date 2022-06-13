@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %} Modifier une section {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <h1>Modifier une section</h1>
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.title_section.label }}
+                {{ form.title_section(class_="form-control") }}
+                {% for error in form.title_section.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.description_section.label }}
+                {{ form.description_section(class_="form-control") }}
+                {% for error in form.description_section.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock %}
+

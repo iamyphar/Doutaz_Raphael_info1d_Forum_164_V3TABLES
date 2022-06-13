@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %} Utilisateurs {% endblock %}
+{% block body %}
+    <div class="container py-5">
+        <div class="d-sm-flex justify-content-between align-items-center">
+            <h1>Utilisateurs</h1>
+            <div><a class="btn btn-primary" href="{{ url_for('user_add') }}" user="button">Ajouter</a></div>
+        </div>
+        <table class="table table-bordered table-sm">
+            {% if data %}
+                <thead>
+                <tr>
+                    <th class="align-middle">
+                        ID
+                    </th>
+                    <th class="align-middle">
+                        Nom d'utilisateur
+                    </th>
+                    <th class="align-middle">
+                        Adresse email
+                    </th>
+                    <th class="align-middle">
+                        Biographie
+                    </th>
+                    <th class="align-middle">
+                        Signature
+                    </th>
+                    <th class="align-middle">
+                        Discord
+                    </th>
+                    <th class="align-middle">
+                        Steam
+                    </th>
+                    <th class="align-middle">
+                        Photo de profil
+                    </th>
+                    <th class="align-middle">
+                        Date de création
+                    </th>
+                    <th class="align-middle">
+
+                    </th>
+                    <th class="align-middle">
+
+                    </th>
+                </tr>
+                </thead>
+            {% endif %}
+
+            {% for row in data %}
+                <tbody>
+                <tr>
+                    <td class="align-middle">
+                        {{ row.id_user }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.nickname_user }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.name_email }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.bio_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.signature_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.discord_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ row.steam_user|default("", True) }}
+                    </td>
+                    <td class="align-middle">
+                        <img class="img" src={{ row.icon_user }} style="border: 0;display:block;width:75px;
+                             max-height:auto" alt="erreur à l'affichage de l'image">
+                    </td>
+                    <td class="align-middle">
+                        {{ row.registration_date_user }}
+                    </td>
+                    <td class="align-middle">
+                        <a class="btn btn-warning" href="{{ url_for('user_update', id_user=row.id_user) }}"
+                           user="button">Modifier</a>
+                    </td>
+                    <td class="align-middle text-center">
+                        <a class="btn btn-danger" href="{{ url_for('user_delete', id_user=row.id_user) }}"
+                           user="button">Supprimer</a>
+                    </td>
+                <tr>
+                    <td class="align-middle text-center" colspan="3">
+                        <a class="btn btn-warning" href="{{ url_for('update_roles_user_have', id_user=row.id_user) }}"
+                           role="button">Modifier les rôles</a>
+                    </td>
+                    <td class="align-middle" colspan="8">
+                        {{ row.name_role|default("PAS DE ROLES", True) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-center" colspan="3">
+                        <a class="btn btn-warning" href="{{ url_for('update_chars_user_have', id_user=row.id_user) }}"
+                           role="button">Modifier les personnages</a>
+                    </td>
+                    <td class="align-middle" colspan="8">
+                        {{ row.name_char|default("PAS DE PERSONNAGE", True) }}
+                    </td>
+                </tr>
+                </tr>
+                </tbody>
+            {% else %}
+                <h4>Aucun utilisateur.</h4>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
